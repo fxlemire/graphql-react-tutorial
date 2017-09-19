@@ -1,7 +1,6 @@
-import { mockNetworkInterfaceWithSchema } from 'apollo-test-utils';
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import React from 'react';
-import { ApolloClient, ApolloProvider } from 'react-apollo';
+import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
 import ChannelsList from './ChannelsList';
 import logo from './logo.svg';
 import { typeDefs } from './schema';
@@ -9,7 +8,7 @@ import './App.css';
 
 const schema = makeExecutableSchema({ typeDefs });
 addMockFunctionsToSchema({ schema });
-const networkInterface = mockNetworkInterfaceWithSchema({ schema });
+const networkInterface = createNetworkInterface('https://api.graph.cool/simple/v1/graphql-tutorial');
 const client = new ApolloClient({ networkInterface });
 
 const App = () => (

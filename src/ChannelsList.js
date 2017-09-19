@@ -2,19 +2,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { gql, graphql } from 'react-apollo';
 
-const ChannelsList = ({ data: { loading, error, channels } }) => (
+const ChannelsList = ({ data: { loading, error, allChannels } }) => (
   loading
     ? <p>Loading ...</p>
     : error
       ? <p>{error.message}</p>
       : <ul className="Item-list App-intro">
-        {channels.map(ch => <li key={ch.id}>{ch.name}</li>)}
+        {allChannels.map(ch => <li key={ch.id}>{ch.name}</li>)}
       </ul>
 );
 
 const channelsListQuery = gql`
   query ChannelsListQuery {
-    channels {
+    allChannels {
       id
       name
     }
@@ -27,7 +27,7 @@ ChannelsList.propTypes = {
   data: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     error: PropTypes.object,
-    channels: PropTypes.arrayOf(PropTypes.shape({
+    allChannels: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     }).isRequired),
