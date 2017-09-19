@@ -2,7 +2,6 @@
 =====================================
 
 * Part 2: https://blog.graph.cool/how-to-setup-a-graphql-backend-for-apollo-apps-with-graphcool-3c57baca5074
-    * But using [Scaphold.io](https://scaphold.io/) instead
 
 -----
 

@@ -4,6 +4,11 @@ import ChannelsList from './Components/ChannelsList';
 import './App.css';
 
 const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/graphql-tutorial' });
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    setTimeout(next, 500);
+  },
+}]);
 const client = new ApolloClient({ networkInterface });
 
 const App = () => (
