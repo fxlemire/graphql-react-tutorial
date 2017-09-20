@@ -5,7 +5,7 @@ import AddMessage from './AddMessage';
 const MessageList = ({ messages }) => (
   <div className="messagesList">
     {messages.map(message => (
-      <div key={message.id} className={`message${message.id < 0 ? ' optimistic' : ''}`}>
+      <div key={message.id} className={`message${Number.parseInt(message.id, 10) < 0 ? ' optimistic' : ''}`}>
         {message.text}
       </div>
     ))}

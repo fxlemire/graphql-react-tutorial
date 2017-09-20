@@ -12,7 +12,7 @@ const AddChannel = ({ mutate }) => {
         optimisticResponse: {
           addChannel: {
             __typename: 'Channel',
-            id: Math.round(Math.random() * -1000000),
+            id: (Math.round(Math.random() * -1000000)).toString(),
             name: e.target.value,
           },
         },

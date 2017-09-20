@@ -30,13 +30,30 @@ const channels = [
 ];
 
 let nextId = 3;
+let nextMessageId = 5;
 
 const resolvers = {
   Mutation: {
-    addChannel: (root, args) => {
-      const newChannel = { id: (nextId++).toString(), messages: [], name: args.name };
+    addChannel: (root, { name }) => {
+      const newChannel = { id: (nextId++).toString(), messages: [], name };
       channels.push(newChannel);
       return newChannel;
+    },
+    addMessage: (root, { message }) => {
+      const channel = channels.find(c => c.id === message.channelId);
+
+      if (!channel) {
+        throw new Error('Channel does not exist.');
+      }
+
+      const newMessage = {
+        id: (nextMessageId++).toString(),
+        text: message.text,
+      };
+
+      channel.messages.push(newMessage);
+
+      return newMessage;
     },
   },
   Query: {

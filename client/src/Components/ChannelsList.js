@@ -14,13 +14,17 @@ const ChannelsList = ({ data: { loading, error, allChannels } }) => {
   return (
     <div className="channelsList">
       <AddChannel />
-      {allChannels.map(ch => (
-        <div key={ch.id} className={`channel${ch.id < 0 ? ' optimistic' : ''}`}>
-          <Link to={ch.id < 0 ? '/' : `channel/${ch.id}`}>
-            {ch.name}
-          </Link>
-        </div>
-      ))}
+      {allChannels.map((ch) => {
+        const channelIdInt = Number.parseInt(ch.id, 10);
+
+        return (
+          <div key={ch.id} className={`channel${channelIdInt < 0 ? ' optimistic' : ''}`}>
+            <Link to={channelIdInt < 0 ? '/' : `channel/${ch.id}`}>
+              {ch.name}
+            </Link>
+          </div>
+        );
+      })}
     </div>
   );
 };

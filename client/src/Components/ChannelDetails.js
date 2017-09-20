@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { gql, graphql } from 'react-apollo';
+import ChannelPreview from './ChannelPreview';
 import MessageList from './MessageList';
 import NotFound from './NotFound';
 
-const ChannelDetails = ({ data: { loading, error, channel } }) => {
+const ChannelDetails = ({ data: { loading, error, channel }, match }) => {
   if (loading) {
-    return <p>Loading...</p>;
+    return <ChannelPreview channelId={match.params.channelId} />;
   }
 
   if (error) {
@@ -52,6 +53,11 @@ ChannelDetails.propTypes = {
         text: PropTypes.string.isRequired,
       })).isRequired,
     }),
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      channelId: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
 };
 

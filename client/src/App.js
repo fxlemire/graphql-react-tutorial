@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
-import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
+import { ApolloClient, ApolloProvider, createNetworkInterface, toIdValue } from 'react-apollo';
 import ChannelDetails from './Components/ChannelDetails';
 import ChannelsList from './Components/ChannelsList';
 import NotFound from './Components/NotFound';
@@ -12,6 +12,7 @@ networkInterface.use([{
     setTimeout(next, 500);
   },
 }]);
+
 const dataIdFromObject = (result) => {
   const typename = result.__typename; // eslint-disable-line no-underscore-dangle
 
@@ -21,7 +22,18 @@ const dataIdFromObject = (result) => {
 
   return null;
 };
-const client = new ApolloClient({ dataIdFromObject, networkInterface });
+
+const customResolvers = {
+  Query: {
+    channel: (_, { id }) => toIdValue(dataIdFromObject({ __typename: 'Channel', id })),
+  },
+};
+
+const client = new ApolloClient({
+  customResolvers,
+  dataIdFromObject,
+  networkInterface,
+});
 
 const App = () => (
   <ApolloProvider client={client}>

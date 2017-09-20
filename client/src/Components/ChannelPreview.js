@@ -1,13 +1,33 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { gql, graphql } from 'react-apollo';
 
-const ChannelPreview = () => {
-  const channel = { name: 'Stub Name' };
+const ChannelPreview = ({ data }) => (
+  <div className="channelName">
+    {data.channel ? data.channel.name : 'Loading...'}
+  </div>
+);
 
-  return (
-    <div className="channelName">
-      {channel.name}
-    </div>
-  );
+const channelQuery = gql`
+  query ChannelQuery($channelId: ID!) {
+    channel(id: $channelId) {
+      id
+      name
+    }
+  }
+`;
+
+ChannelPreview.propTypes = {
+  data: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.object,
+    channel: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 };
 
-export default ChannelPreview;
+export default graphql(channelQuery, {
+  options: props => ({ variables: { channelId: props.channelId } }),
+})(ChannelPreview);
