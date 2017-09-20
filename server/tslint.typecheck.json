@@ -1,0 +1,14 @@
+{
+  "defaultSeverity": "warning",
+  // see https://palantir.github.io/tslint/rules
+  "rules": {
+    // Functionality
+    "no-for-in-array": true,
+    "no-unused-variable": [true],
+    "no-use-before-declare": true,
+    "restrict-plus-operands": true,
+
+    // Style
+    "completed-docs": [true, "classes", "functions"]
+  }
+}

@@ -1,7 +1,7 @@
 [Full-stack React + GraphQL Tutorial](https://dev-blog.apollodata.com/full-stack-react-graphql-tutorial-582ac8d24e3b)
 =====================================
 
-* Part 2: https://blog.graph.cool/how-to-setup-a-graphql-backend-for-apollo-apps-with-graphcool-3c57baca5074
+* Webpack-TypeScript-GraphQL Server: https://github.com/DxCx/webpack-graphql-server
 
 -----
 
