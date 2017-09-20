@@ -31,8 +31,12 @@ const typeDefs = `
     addChannel(name: String!): Channel
     addMessage(message: MessageInput!): Message
   }
+
+  type Subscription {
+    messageAdded(channelId: ID!): Message
+  }
 `;
 
-const schema = makeExecutableSchema({ resolvers, typeDefs });
+const executableSchema = makeExecutableSchema({ resolvers, typeDefs } as any);
 
-export { schema };
+export { executableSchema };
