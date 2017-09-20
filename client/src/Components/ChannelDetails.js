@@ -4,7 +4,7 @@ import { gql, graphql } from 'react-apollo';
 import MessageList from './MessageList';
 import NotFound from './NotFound';
 
-const ChannelDetails = ({ data: { loading, error, Channel } }) => {
+const ChannelDetails = ({ data: { loading, error, channel } }) => {
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -13,23 +13,23 @@ const ChannelDetails = ({ data: { loading, error, Channel } }) => {
     return <p>error.message</p>;
   }
 
-  if (!Channel) {
+  if (!channel) {
     return <NotFound />;
   }
 
   return (
     <div>
       <div className="channelName">
-        {Channel.name}
+        {channel.name}
       </div>
-      <MessageList messages={Channel.messages} />
+      <MessageList messages={channel.messages} />
     </div>
   );
 };
 
 export const channelDetailsQuery = gql`
   query ChannelDetailsQuery($channelId : ID!) {
-    Channel(id: $channelId) {
+    channel(id: $channelId) {
       id
       name
       messages {
@@ -44,7 +44,7 @@ ChannelDetails.propTypes = {
   data: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     error: PropTypes.object,
-    Channel: PropTypes.shape({
+    channel: PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       messages: PropTypes.arrayOf(PropTypes.shape({

@@ -6,7 +6,7 @@ import ChannelsList from './Components/ChannelsList';
 import NotFound from './Components/NotFound';
 import './App.css';
 
-const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/graphql-tutorial' });
+const networkInterface = createNetworkInterface({ uri: 'http://localhost:4000/graphql' });
 networkInterface.use([{
   applyMiddleware(req, next) {
     setTimeout(next, 500);

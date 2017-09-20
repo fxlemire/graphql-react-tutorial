@@ -10,18 +10,18 @@ const AddChannel = ({ mutate }) => {
 
       mutate({
         optimisticResponse: {
-          createChannel: {
+          addChannel: {
             __typename: 'Channel',
             id: Math.round(Math.random() * -1000000),
             name: e.target.value,
           },
         },
-        update: (store, { data: { createChannel } }) => {
+        update: (store, { data: { addChannel } }) => {
           // Read the data from the cache for this query.
           const data = store.readQuery({ query: channelsListQuery });
 
           // Add our channel from the mutation to the end.
-          data.allChannels.push(createChannel);
+          data.allChannels.push(addChannel);
           // Write the data back to the cache.
           store.writeQuery({ query: channelsListQuery, data });
         },
@@ -43,8 +43,8 @@ const AddChannel = ({ mutate }) => {
 };
 
 const addChannelMutation = gql`
-  mutation createChannel($name: String!) {
-    createChannel(name: $name) {
+  mutation addChannel($name: String!) {
+    addChannel(name: $name) {
       id
       name
     }
