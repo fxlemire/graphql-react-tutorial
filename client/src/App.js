@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, createNetworkInterface, toIdValue } from 'react-apollo';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import ChannelDetails from './Components/ChannelDetails';
 import ChannelsList from './Components/ChannelsList';
 import NotFound from './Components/NotFound';
@@ -12,6 +13,9 @@ networkInterface.use([{
     setTimeout(next, 500);
   },
 }]);
+
+const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { reconnect: true });
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
 
 const dataIdFromObject = (result) => {
   const typename = result.__typename; // eslint-disable-line no-underscore-dangle
@@ -32,7 +36,7 @@ const customResolvers = {
 const client = new ApolloClient({
   customResolvers,
   dataIdFromObject,
-  networkInterface,
+  networkInterface: networkInterfaceWithSubscriptions,
 });
 
 const App = () => (
