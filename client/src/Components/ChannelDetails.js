@@ -1,32 +1,66 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { gql, graphql } from 'react-apollo';
 import ChannelPreview from './ChannelPreview';
 import MessageList from './MessageList';
 import NotFound from './NotFound';
 
-const ChannelDetails = ({ data: { loading, error, channel }, match }) => {
-  if (loading) {
-    return <ChannelPreview channelId={match.params.channelId} />;
+const messagesSubscription = gql`
+subscription messageAdded($channelId: ID!) {
+  messageAdded(channelId: $channelId) {
+    id
+    text
+  }
+}
+`;
+
+class ChannelDetails extends Component {
+  componentWillMount() {
+    this.props.data.subscribeToMore({
+      document: messagesSubscription,
+      updateQuery: (prev, { subscriptionData }) => (
+        !subscriptionData.data || prev.channel.messages.find(m => m.id === subscriptionData.data.messageAdded.id) ?
+          prev :
+          {
+            ...prev,
+            channel: {
+              ...prev.channel,
+              messages: [
+                ...prev.channel.messages,
+                subscriptionData.data.messageAdded,
+              ],
+            },
+          }
+      ),
+      variables: { channelId: this.props.match.params.channelId },
+    });
   }
 
-  if (error) {
-    return <p>error.message</p>;
-  }
+  render() {
+    const { data: { loading, error, channel }, match } = this.props;
 
-  if (!channel) {
-    return <NotFound />;
-  }
+    if (loading) {
+      return <ChannelPreview channelId={match.params.channelId} />;
+    }
 
-  return (
-    <div>
-      <div className="channelName">
-        {channel.name}
+    if (error) {
+      return <p>error.message</p>;
+    }
+
+    if (!channel) {
+      return <NotFound />;
+    }
+
+    return (
+      <div>
+        <div className="channelName">
+          {channel.name}
+        </div>
+        <MessageList messages={channel.messages} />
       </div>
-      <MessageList messages={channel.messages} />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export const channelDetailsQuery = gql`
   query ChannelDetailsQuery($channelId : ID!) {
@@ -43,6 +77,7 @@ export const channelDetailsQuery = gql`
 
 ChannelDetails.propTypes = {
   data: PropTypes.shape({
+    subscribeToMore: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.object,
     channel: PropTypes.shape({

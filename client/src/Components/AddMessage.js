@@ -21,7 +21,10 @@ const AddMessage = ({ mutate, match }) => {
             variables: { channelId: match.params.channelId },
           });
 
-          data.channel.messages.push(addMessage);
+          if (!data.channel.messages.find(m => m.id === addMessage.id)) {
+            data.channel.messages.push(addMessage);
+          }
+
           store.writeQuery({
             data,
             query: channelDetailsQuery,
